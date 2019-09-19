@@ -1,10 +1,5 @@
 'use strict';
 
-function main() {
-    listen();
-    console.log('loaded');
-}
-
 function makeNewItem(str) {
     return `
         <li>
@@ -22,12 +17,14 @@ function makeNewItem(str) {
 }
 
 function listen() {
+    
     $('#js-shopping-list-form').on('click', 'button', e => {
         e.preventDefault();
-        let input = $(e.currentTarget).find('#shopping-list-entry');
-        console.log(input);
-        $('.shopping-list').append(makeNewItem(input.val()));
-        input.empty();
+        let input = $(this).find('#shopping-list-entry');
+        if (input.val() !== ''){
+            $('.shopping-list').append(makeNewItem(input.val()));
+            input.val('');
+        }
     });
 
     $('.shopping-list').on('click', '.shopping-item-toggle', e => {
@@ -36,6 +33,10 @@ function listen() {
             spn.removeClass('shopping-item__checked');
         }else spn.addClass('shopping-item__checked');
     });
+
+    $('.shopping-list').on('click', '.shopping-item-delete', e => {
+        $(e.target).closest('li').remove();
+    });
 }
 
-$(main);
+$(listen);
